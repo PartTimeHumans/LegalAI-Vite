@@ -7,7 +7,8 @@ import {
   Bell, 
   CheckCircle, 
   AlertTriangle, 
-  Briefcase 
+  Briefcase,
+  MessageCircle
 } from 'lucide-react';
 import Calendar from '../components/Calender';
 
@@ -73,14 +74,42 @@ const JudgeDashboard: React.FC = () => {
       priority: 'Low' as const,
       date: '2024-06-20',
     },
+    {
+      title: 'Fraud Investigation',
+      description: 'Investigating a case of alleged fraud involving multiple parties.',
+      priority: 'High' as const,
+      date: '2024-06-23',
+    },
+    {
+      title: 'Tax Evasion Case',
+      description: 'Representing a client accused of tax evasion.',
+      priority: 'Medium' as const,
+      date: '2024-06-26',
+    },
+    {
+      title: 'Environmental Protection Lawsuit',
+      description: 'Taking legal action against a corporation for environmental damage.',
+      priority: 'Low' as const,
+      date: '2024-06-29',
+    },
+    {
+      title: 'Land Acquisition Dispute',
+      description: 'Resolving disputes regarding land acquisition by the government.',
+      priority: 'Medium' as const,
+      date: '2024-07-01',
+    },
   ];
-
+  
   const events = [
     { date: '2024-06-15', title: 'Property Dispute Hearing', type: 'hearing' },
     { date: '2024-06-18', title: 'Contract Violation Case', type: 'meeting' },
     { date: '2024-06-20', title: 'Civil Rights Case Review', type: 'deadline' },
+    { date: '2024-06-23', title: 'Fraud Investigation Consultation', type: 'meeting' },
+    { date: '2024-06-26', title: 'Tax Evasion Case Review', type: 'deadline' },
+    { date: '2024-06-29', title: 'Environmental Lawsuit Strategy', type: 'meeting' },
+    { date: '2024-07-01', title: 'Land Acquisition Hearing', type: 'hearing' },
   ];
-
+  
   const notifications = [
     { 
       icon: <AlertTriangle className="text-yellow-500" />, 
@@ -96,9 +125,29 @@ const JudgeDashboard: React.FC = () => {
       icon: <Briefcase className="text-blue-500" />, 
       message: "New case assignment received",
       time: "3 days ago"
-    }
+    },
+    { 
+      icon: <AlertTriangle className="text-yellow-500" />, 
+      message: "Fraud investigation case requires additional evidence",
+      time: "1 hour ago"
+    },
+    { 
+      icon: <CheckCircle className="text-green-500" />, 
+      message: "Tax evasion case hearing confirmed",
+      time: "3 hours ago"
+    },
+    { 
+      icon: <MessageCircle className="text-blue-500" />, 
+      message: "New communication regarding environmental lawsuit",
+      time: "Yesterday"
+    },
+    { 
+      icon: <AlertTriangle className="text-yellow-500" />, 
+      message: "Land acquisition documents missing",
+      time: "6 hours ago"
+    },
   ];
-
+  
   const documents = [
     { 
       title: "Property Dispute Case File", 
@@ -114,9 +163,28 @@ const JudgeDashboard: React.FC = () => {
       title: "Civil Rights Case Brief", 
       type: "Legal Brief", 
       date: "2024-06-14" 
-    }
-  ];
-
+    },
+    { 
+      title: "Fraud Investigation Report", 
+      type: "Case Report", 
+      date: "2024-06-17" 
+    },
+    { 
+      title: "Tax Evasion Evidence", 
+      type: "Case Evidence", 
+      date: "2024-06-19" 
+    },
+    { 
+      title: "Environmental Lawsuit Complaint", 
+      type: "Legal Document", 
+      date: "2024-06-21" 
+    },
+    { 
+      title: "Land Acquisition Agreement", 
+      type: "Legal Document", 
+      date: "2024-06-24" 
+    },
+  ];  
   return (
     <div className="bg-background min-h-screen p-6">
       <div className="container mx-auto">

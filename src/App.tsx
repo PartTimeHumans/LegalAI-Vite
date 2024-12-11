@@ -10,12 +10,14 @@ const App: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col">
       <Navbar />
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route path="/judge" element={<JudgeDashboard />} />
-        <Route path="/lawyer" element={<LawyerDashboard />} />
-        <Route path="/user" element={<UserDashboard />} />
-      </Routes>
+      <div className="mt-[55px]"> {/* Adds a 20px margin (mt-5 corresponds to 20px) */}
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/judge" element={<JudgeDashboard />} />
+          <Route path="/lawyer" element={<LawyerDashboard />} />
+          <Route path="/user" element={<UserDashboard />} />
+        </Routes>
+      </div>
     </div>
   );
 };
