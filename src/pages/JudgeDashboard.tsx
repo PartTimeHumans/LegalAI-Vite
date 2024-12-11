@@ -112,12 +112,12 @@ const JudgeDashboard: React.FC = () => {
   
   const notifications = [
     { 
-      icon: <AlertTriangle className="text-yellow-500" />, 
+      icon: <AlertTriangle className="text-teal-500" />, 
       message: "Pending case documents for Property Dispute",
       time: "2 hours ago"
     },
     { 
-      icon: <CheckCircle className="text-green-500" />, 
+      icon: <CheckCircle className="text-slate-500" />, 
       message: "Case hearing for Contract Violation scheduled",
       time: "Yesterday"
     },
@@ -127,12 +127,12 @@ const JudgeDashboard: React.FC = () => {
       time: "3 days ago"
     },
     { 
-      icon: <AlertTriangle className="text-yellow-500" />, 
+      icon: <AlertTriangle className="text-indigo-500" />, 
       message: "Fraud investigation case requires additional evidence",
       time: "1 hour ago"
     },
     { 
-      icon: <CheckCircle className="text-green-500" />, 
+      icon: <CheckCircle className="text-red-500" />, 
       message: "Tax evasion case hearing confirmed",
       time: "3 hours ago"
     },
@@ -142,7 +142,7 @@ const JudgeDashboard: React.FC = () => {
       time: "Yesterday"
     },
     { 
-      icon: <AlertTriangle className="text-yellow-500" />, 
+      icon: <AlertTriangle className="text-fuchsia-500" />,
       message: "Land acquisition documents missing",
       time: "6 hours ago"
     },
