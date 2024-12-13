@@ -7,6 +7,11 @@ from langchain.memory import ConversationBufferWindowMemory
 from langchain.chains import ConversationalRetrievalChain
 import streamlit as st
 import time
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+
 st.set_page_config(page_title="LawGPT")
 col1, col2, col3 = st.columns([1,4,1])
 
@@ -24,7 +29,7 @@ embeddings = HuggingFaceEmbeddings(model_name="nomic-ai/nomic-embed-text-v1",mod
 db = FAISS.load_local("ipc_vector_db", embeddings, allow_dangerous_deserialization=True)
 db_retriever = db.as_retriever(search_type="similarity",search_kwargs={"k": 4})
 
-prompt_template = """<s>[INST]This is a chat template and As a legal chat bot specializing in Indian Penal Code queries, your primary objective is to provide accurate and concise information based on the user's questions. Do not generate your own questions and answers. You will adhere strictly to the instructions provided, offering relevant context from the knowledge base while avoiding unnecessary details. Your responses will be brief, to the point, and in compliance with the established format. If a question falls outside the given context, you will refrain from utilizing the chat history and instead rely on your own knowledge base to generate an appropriate response. You will prioritize the user's query and refrain from posing additional questions. The aim is to deliver professional, precise, and contextually relevant information pertaining to the Indian Penal Code.
+prompt_template = """<s>[INST]This is a chat template and As a legal chat bot specializing in Indian Penal Code queries, your primary objective is to provide accurate and concise information based on the user's questions. Do not generate your own questions and answers. You will adhere strictly to the instructions provided, offering relevant context from the knowledge base while avoiding unnecessary details. Your responses will be brief, to the point, and in compliance with the established format. If a question falls outside the given context, you will refrain from utilizing the chat history and instead rely on your own knowledge base to generate an appropriate response. You will prioritize the user's query and refrain from posing additional questions. The aim is to deliver professional, precise and contextually relevant information pertaining to the Indian Penal Code.
 CONTEXT: {context}
 CHAT HISTORY: {chat_history}
 QUESTION: {question}
@@ -34,7 +39,10 @@ ANSWER:
 
 prompt = PromptTemplate(template=prompt_template,
                         input_variables=['context', 'question', 'chat_history'])
-TOGETHER_AI_API="9a0ede81647de8bef39a9857e9b1515448b53f4811d20fd1ad4ebb89e2d7a9d1"
+TOGETHER_AI_API = os.getenv("TOGETHER_AI_API")
+if not TOGETHER_AI_API:
+    raise ValueError("key not found")
+
 
 llm = Together(
     model="mistralai/Mistral-7B-Instruct-v0.2",
