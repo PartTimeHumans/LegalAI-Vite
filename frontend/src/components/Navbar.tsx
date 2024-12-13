@@ -1,4 +1,3 @@
-// src/components/Navbar.tsx
 import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
@@ -6,7 +5,6 @@ import {
   Scale, 
   Menu, 
   X, 
-  ChevronDown, 
   Search,
   Bell,
   User,
@@ -14,13 +12,6 @@ import {
   LogOut,
   HelpCircle,
   BookOpen,
-  MessageSquare,
-  Users,
-  FileText,
-  Sparkles,
-  Archive,
-  Clock,
-  Star
 } from 'lucide-react';
 
 const Navbar: React.FC = () => {
@@ -29,14 +20,12 @@ const Navbar: React.FC = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [notifications, setNotifications] = useState([
+  const notifications = useState([
     { id: 1, title: 'New case assigned', time: '2m ago', unread: true },
     { id: 2, title: 'Document review pending', time: '1h ago', unread: true },
     { id: 3, title: 'Meeting scheduled', time: '3h ago', unread: false },
-  ]);
+  ])[0];
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<string | null>(null);
-  
   const { scrollY } = useScroll();
   const location = useLocation();
   const searchRef = useRef<HTMLInputElement>(null);
@@ -65,114 +54,38 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     {
-      label: 'Solutions',
-      id: 'solutions',
-      dropdownItems: [
-        { 
-          label: 'For Judges', 
-          path: '/judge', 
-          icon: <Scale className="w-4 h-4" />,
-          description: 'Streamline case management and decision making'
-        },
-        { 
-          label: 'For Lawyers', 
-          path: '/lawyer', 
-          icon: <BookOpen className="w-4 h-4" />,
-          description: 'Enhanced legal research and document preparation'
-        },
-        { 
-          label: 'For Users', 
-          path: '/user', 
-          icon: <User className="w-4 h-4" />,
-          description: 'Easy access to legal services and case tracking'
-        },
-      ]
+      label: 'Summarisation',
+      id: 'summarisation',
+      path: '/summarisation'
     },
     {
-      label: 'Resources',
-      id: 'resources',
-      dropdownItems: [
-        { 
-          label: 'Documentation', 
-          path: '/docs', 
-          icon: <BookOpen className="w-4 h-4" />,
-          description: 'Detailed guides and API documentation'
-        },
-        { 
-          label: 'Community', 
-          path: '/community', 
-          icon: <Users className="w-4 h-4" />,
-          description: 'Join our growing legal tech community'
-        },
-        { 
-          label: 'Tutorials', 
-          path: '/tutorials', 
-          icon: <MessageSquare className="w-4 h-4" />,
-          description: 'Learn through interactive tutorials'
-        },
-      ]
+      label: 'Transcript',
+      id: 'transcript',
+      path: '/transcript'
     },
-    { 
-      label: 'Pricing',
-      id: 'pricing',
-      features: [
-        { icon: <Star />, label: 'Premium Features' },
-        { icon: <Clock />, label: 'Real-time Support' },
-        { icon: <Archive />, label: 'Unlimited Storage' },
-      ]
+    {
+      label: 'Document Query',
+      id: 'doc-query',
+      path: '/query'
     },
+    {
+      label: 'Draft',
+      id: 'draft',
+      path: '/draft'
+    },
+    {
+      label: 'Advocate Diary',
+      id: 'advocate-diary',
+      path: '/advocate-diary'
+    }
   ];
 
   const searchResults = [
-    { type: 'page', title: 'Dashboard', path: '/dashboard' },
-    { type: 'doc', title: 'Legal Documentation', path: '/docs' },
-    { type: 'feature', title: 'AI Analysis', path: '/features' },
+    { type: 'page', title: 'Summarisation', path: '/summarisation' },
+    { type: 'page', title: 'Transcript', path: '/transcript' },
+    { type: 'page', title: 'Document Query', path: '/query' },
   ].filter(result => 
     searchQuery && result.title.toLowerCase().includes(searchQuery.toLowerCase())
-  );
-
-  const DropdownContent = ({ item }: { item: any }) => (
-    <motion.div
-      initial={{ opacity: 0, y: 10 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 10 }}
-      className="absolute top-full left-0 mt-2 w-64 bg-white rounded-lg shadow-lg overflow-hidden"
-    >
-      <div className="p-4">
-        <h3 className="text-sm font-semibold text-gray-400 uppercase tracking-wider mb-3">
-          {item.label}
-        </h3>
-        <div className="space-y-4">
-          {item.dropdownItems?.map((dropdownItem: any, idx: number) => (
-            <Link
-              key={idx}
-              to={dropdownItem.path}
-              className="group flex items-start p-2 hover:bg-gray-50 rounded-lg transition-colors"
-            >
-              <div className="flex-shrink-0 w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-                {dropdownItem.icon}
-              </div>
-              <div className="ml-3">
-                <p className="text-sm font-medium text-gray-900">{dropdownItem.label}</p>
-                <p className="text-xs text-gray-500">{dropdownItem.description}</p>
-              </div>
-            </Link>
-          ))}
-        </div>
-      </div>
-      {item.features && (
-        <div className="bg-gray-50 p-4">
-          <div className="grid grid-cols-2 gap-4">
-            {item.features.map((feature: any, idx: number) => (
-              <div key={idx} className="flex items-center space-x-2 text-sm text-gray-600">
-                {feature.icon}
-                <span>{feature.label}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-    </motion.div>
   );
 
   return (
@@ -192,7 +105,7 @@ const Navbar: React.FC = () => {
           style={{ scaleX: scrollY }}
         />
 
-        <div className="container mx-auto px-4">
+        <div className="container px-4 mx-auto">
           <div className="flex items-center justify-between h-16">
             {/* Logo with animation */}
             <Link to="/" className="flex items-center space-x-2 group">
@@ -205,43 +118,35 @@ const Navbar: React.FC = () => {
               <motion.span
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                className="text-2xl font-bold bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent"
+                className="text-2xl font-bold text-transparent bg-gradient-to-r from-primary to-primary-dark bg-clip-text"
               >
                 Legal AI
               </motion.span>
             </Link>
 
-            {/* Desktop Navigation with Mega Menu */}
-            <div className="hidden md:flex items-center space-x-8">
+            {/* Desktop Navigation */}
+            <div className="items-center hidden space-x-8 md:flex">
               {navItems.map((item) => (
-                <div
+                <Link
                   key={item.id}
-                  className="relative"
-                  onMouseEnter={() => setActiveTab(item.id)}
-                  onMouseLeave={() => setActiveTab(null)}
+                  to={item.path}
+                  className={`text-gray-700 hover:text-primary ${
+                    location.pathname === item.path ? 'font-semibold text-primary' : ''
+                  }`}
                 >
-                  <button className="flex items-center space-x-1 text-gray-700 hover:text-primary">
-                    <span>{item.label}</span>
-                    <ChevronDown className={`w-4 h-4 transition-transform duration-200 ${
-                      activeTab === item.id ? 'rotate-180' : ''
-                    }`} />
-                  </button>
-
-                  <AnimatePresence>
-                    {activeTab === item.id && <DropdownContent item={item} />}
-                  </AnimatePresence>
-                </div>
+                  {item.label}
+                </Link>
               ))}
             </div>
 
             {/* Right Section with Notifications and Profile */}
-            <div className="hidden md:flex items-center space-x-4">
+            <div className="items-center hidden space-x-4 md:flex">
               {/* Search Button */}
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setIsSearchOpen(true)}
-                className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                className="p-2 transition-colors rounded-full hover:bg-gray-100"
               >
                 <Search className="w-5 h-5 text-gray-700" />
               </motion.button>
@@ -252,11 +157,11 @@ const Navbar: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setIsNotificationOpen(!isNotificationOpen)}
-                  className="p-2 hover:bg-gray-100 rounded-full relative"
+                  className="relative p-2 rounded-full hover:bg-gray-100"
                 >
                   <Bell className="w-5 h-5 text-gray-700" />
                   {notifications.some(n => n.unread) && (
-                    <span className="absolute top-1 right-1 w-2 h-2 bg-red-500 rounded-full" />
+                    <span className="absolute w-2 h-2 bg-red-500 rounded-full top-1 right-1" />
                   )}
                 </motion.button>
 
@@ -266,7 +171,7 @@ const Navbar: React.FC = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-80 bg-white rounded-lg shadow-lg py-2"
+                      className="absolute right-0 py-2 mt-2 bg-white rounded-lg shadow-lg w-80"
                     >
                       {notifications.map((notification) => (
                         <div
@@ -275,7 +180,7 @@ const Navbar: React.FC = () => {
                             notification.unread ? 'bg-blue-50/50' : ''
                           }`}
                         >
-                          <div className="flex justify-between items-start">
+                          <div className="flex items-start justify-between">
                             <p className="text-sm font-medium text-gray-900">
                               {notification.title}
                             </p>
@@ -294,9 +199,9 @@ const Navbar: React.FC = () => {
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                   onClick={() => setIsProfileDropdownOpen(!isProfileDropdownOpen)}
-                  className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-full"
+                  className="flex items-center p-2 space-x-2 rounded-full hover:bg-gray-100"
                 >
-                  <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                  <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10">
                     <User className="w-5 h-5 text-primary" />
                   </div>
                 </motion.button>
@@ -307,7 +212,7 @@ const Navbar: React.FC = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       exit={{ opacity: 0, y: 10 }}
-                      className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2"
+                      className="absolute right-0 w-48 py-2 mt-2 bg-white rounded-lg shadow-lg"
                     >
                       {[
                         { label: 'Profile', icon: <User className="w-4 h-4" /> },
@@ -318,7 +223,7 @@ const Navbar: React.FC = () => {
                         <motion.button
                           key={idx}
                           whileHover={{ x: 5 }}
-                          className="w-full flex items-center space-x-2 px-4 py-2 hover:bg-gray-50 text-gray-700"
+                          className="flex items-center w-full px-4 py-2 space-x-2 text-gray-700 hover:bg-gray-50"
                         >
                           {item.icon}
                           <span>{item.label}</span>
@@ -334,7 +239,7 @@ const Navbar: React.FC = () => {
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              className="md:hidden p-2"
+              className="p-2 md:hidden"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
               <AnimatePresence mode="wait">
@@ -370,7 +275,7 @@ const Navbar: React.FC = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 bg-black/50 flex items-start justify-center pt-20 px-4"
+            className="fixed inset-0 z-50 flex items-start justify-center px-4 pt-20 bg-black/50"
             onClick={() => setIsSearchOpen(false)}
           >
             <motion.div
@@ -381,7 +286,7 @@ const Navbar: React.FC = () => {
               onClick={e => e.stopPropagation()}
             >
               <div className="p-4">
-                <div className="flex items-center space-x-2 bg-gray-100 rounded-lg px-4 py-2">
+                <div className="flex items-center px-4 py-2 space-x-2 bg-gray-100 rounded-lg">
                   <Search className="w-5 h-5 text-gray-400" />
                   <input
                     ref={searchRef}
@@ -395,7 +300,7 @@ const Navbar: React.FC = () => {
                   {searchQuery && (
                     <button
                       onClick={() => setSearchQuery('')}
-                      className="p-1 hover:bg-gray-200 rounded-full"
+                      className="p-1 rounded-full hover:bg-gray-200"
                     >
                       <X className="w-4 h-4 text-gray-400" />
                     </button>
@@ -410,11 +315,9 @@ const Navbar: React.FC = () => {
                         initial={{ opacity: 0, x: -20 }}
                         animate={{ opacity: 1, x: 0 }}
                         transition={{ delay: idx * 0.1 }}
-                        className="flex items-center space-x-2 p-2 hover:bg-gray-100 rounded-lg cursor-pointer"
+                        className="flex items-center p-2 space-x-2 rounded-lg cursor-pointer hover:bg-gray-100"
                       >
                         {result.type === 'page' && <BookOpen className="w-4 h-4 text-blue-500" />}
-                        {result.type === 'doc' && <FileText className="w-4 h-4 text-green-500" />}
-                        {result.type === 'feature' && <Sparkles className="w-4 h-4 text-purple-500" />}
                         <span>{result.title}</span>
                       </motion.div>
                     ))}
