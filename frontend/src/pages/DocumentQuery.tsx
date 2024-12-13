@@ -250,7 +250,7 @@ const DocumentQuery: FC = () => {
                   type="text"
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
-                  placeholder="Type your message..."
+                  placeholder="Upload your document for summarization, analysis or translation..."
                   className="flex-1 p-2 transition-all duration-200 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                 />
                 <motion.label 

@@ -1,5 +1,3 @@
-import React from 'react'
-
 function Summarisation() {
   return (
     <div>Summarisation</div>
