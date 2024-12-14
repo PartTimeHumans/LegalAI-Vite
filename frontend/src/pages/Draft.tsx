@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
 import Showdown from 'showdown';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
@@ -18,8 +18,8 @@ import {
   RotateCcw
 } from 'lucide-react';
 
-// Type Definitions
-type TemplateType = 'Contract' | 'Agreement' | 'Will' | 'Affidavit' | '';
+// Enhanced Type Definitions
+type TemplateType = 'Contract' | 'Agreement' | 'Will' | 'Affidavit';
 
 interface FormInputs {
   prompt: string;
@@ -30,29 +30,36 @@ interface FormInputs {
   affidavitType: string;
 }
 
-type ApiResponse = {
-  code: string;
-  error?: string;
-};
-
 const LegalDocumentGenerator: React.FC = () => {
+  // Improved State Management
   const [code, setCode] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [isPDFGenerated, setIsPDFGenerated] = useState<boolean>(false);
-  const [isDocxGenerated, setIsDocxGenerated] = useState<boolean>(false);
+  const [generationStatus, setGenerationStatus] = useState<{
+    pdf: boolean;
+    docx: boolean;
+  }>({ pdf: false, docx: false });
   const [apiError, setApiError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  const converter = new Showdown.Converter();
-  const { register, handleSubmit, watch, setValue, formState: { errors } } = useForm<FormInputs>();
+  // Performance Optimization: Memoized Converter
+  const converter = useMemo(() => new Showdown.Converter(), []);
+  const { 
+    register, 
+    handleSubmit, 
+    watch, 
+    setValue, 
+    formState: { errors } 
+  } = useForm<FormInputs>();
 
-  const removeMarkdown = (text: string): string => {
-    const start = text.indexOf("\`\`\`jsx");
-    const end = text.lastIndexOf("\`\`\`");
+  // Memoized Markdown Removal Function
+  const removeMarkdown = useCallback((text: string): string => {
+    const start = text.indexOf("```jsx");
+    const end = text.lastIndexOf("```");
     return start !== -1 && end > start ? text.slice(start + 6, end) : text;
-  };
+  }, []);
 
-  const onSubmit: SubmitHandler<FormInputs> = async (data) => {
+  // Optimized Submission Handler
+  const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
     const { prompt, template } = data;
 
     if (!prompt || !template) {
@@ -60,24 +67,27 @@ const LegalDocumentGenerator: React.FC = () => {
       return;
     }
 
-    const selectedType = data[`${template.toLowerCase()}Type` as keyof FormInputs];
+    // Dynamic Type Selection
+    const subtypeKey = `${template.toLowerCase()}Type` as keyof FormInputs;
+    const selectedSubtype = data[subtypeKey];
 
-    if (!selectedType) {
-      setApiError(errors);
+    if (!selectedSubtype) {
+      setApiError(`Please select a ${template} type.`);
       return;
     }
 
     setLoading(true);
     setApiError(null);
+    setGenerationStatus({ pdf: false, docx: false });
 
     try {
       const response = await generateDocument({
         prompt,
         template,
-        contractType: template === 'Contract' ? selectedType : undefined,
-        agreementType: template === 'Agreement' ? selectedType : undefined,
-        willType: template === 'Will' ? selectedType : undefined,
-        affidavitType: template === 'Affidavit' ? selectedType : undefined,
+        contractType: template === 'Contract' ? selectedSubtype : undefined,
+        agreementType: template === 'Agreement' ? selectedSubtype : undefined,
+        willType: template === 'Will' ? selectedSubtype : undefined,
+        affidavitType: template === 'Affidavit' ? selectedSubtype : undefined,
       });
       setCode(removeMarkdown(response.code));
     } catch (error) {
@@ -86,9 +96,10 @@ const LegalDocumentGenerator: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [removeMarkdown]);
 
-  const handleDownloadPDF = async (): Promise<void> => {
+  // Memoized PDF Download Handler
+  const handleDownloadPDF = useCallback(async (): Promise<void> => {
     const element = document.getElementById("pdf-content");
     if (!element) {
       setApiError("Could not generate PDF. Please try again.");
@@ -105,14 +116,15 @@ const LegalDocumentGenerator: React.FC = () => {
 
     try {
       await html2pdf().from(element).set(options).save();
-      setIsPDFGenerated(true);
+      setGenerationStatus(prev => ({ ...prev, pdf: true }));
     } catch (error) {
       console.error("PDF generation error:", error);
       setApiError("Failed to generate PDF. Please try again.");
     }
-  };
+  }, []);
 
-  const handleDownloadDocx = (): void => {
+  // Memoized DOCX Download Handler
+  const handleDownloadDocx = useCallback((): void => {
     if (!code) {
       setApiError("No content to generate DOCX. Please generate content first.");
       return;
@@ -129,12 +141,19 @@ const LegalDocumentGenerator: React.FC = () => {
 
     Packer.toBlob(doc).then(blob => {
       saveAs(blob, "legal_document.docx");
-      setIsDocxGenerated(true);
+      setGenerationStatus(prev => ({ ...prev, docx: true }));
     }).catch(error => {
       console.error("DOCX generation error:", error);
       setApiError("Failed to generate DOCX. Please try again.");
     });
-  };
+  }, [code]);
+
+  // Memoized Reset Function
+  const resetForm = useCallback(() => {
+    setCode('');
+    setApiError(null);
+    setGenerationStatus({ pdf: false, docx: false });
+  }, []);
 
   const template = watch("template");
 
@@ -174,12 +193,7 @@ const LegalDocumentGenerator: React.FC = () => {
             </motion.button>
             <motion.button 
               whileHover={{ rotate: 180 }}
-              onClick={() => {
-                setCode('');
-                setApiError(null);
-                setIsPDFGenerated(false);
-                setIsDocxGenerated(false);
-              }}
+              onClick={resetForm}
               className="p-2 transition-colors duration-200 rounded-full hover:bg-gray-100"
             >
               <RotateCcw className="w-5 h-5 text-gray-600" />
@@ -349,7 +363,7 @@ const LegalDocumentGenerator: React.FC = () => {
                   </div>
 
                   <AnimatePresence>
-                    {(isPDFGenerated || isDocxGenerated) && (
+                    {(generationStatus.pdf || generationStatus.docx) && (
                       <motion.div
                         initial={{ opacity: 0, y: -20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -371,4 +385,4 @@ const LegalDocumentGenerator: React.FC = () => {
   );
 };
 
-export default LegalDocumentGenerator;
+export default React.memo(LegalDocumentGenerator);
