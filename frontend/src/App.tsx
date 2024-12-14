@@ -8,6 +8,7 @@ import DocumentQuery from './pages/DocumentQuery';
 import Draft from './pages/Draft';
 import AdvocateDiary from './pages/AdvocateDiary';
 import ChatSection from './components/Chatbot';
+import AuthPage from './pages/AuthPage';
 
 const App: React.FC = () => {
   return (
@@ -22,6 +23,8 @@ const App: React.FC = () => {
             <Route path="/query" element={<DocumentQuery />} />
             <Route path="/draft" element={<Draft />} />
             <Route path="/advocate-diary" element={<AdvocateDiary />} />
+            <Route path="/login" element={<AuthPage />} />
+            <Route path="/signup" element={<AuthPage />} />
           </Routes>
         </div>
       </div>

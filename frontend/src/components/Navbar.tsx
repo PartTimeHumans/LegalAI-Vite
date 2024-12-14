@@ -1,18 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence, useScroll, useMotionValueEvent } from 'framer-motion';
-import { 
-  Scale, 
-  Menu, 
-  X, 
-  Search,
-  Bell,
-  User,
-  Settings,
-  LogOut,
-  HelpCircle,
-  BookOpen,
-} from 'lucide-react';
+import { Scale, Menu, X, Search, Bell, User, Settings, LogOut, HelpCircle, BookOpen, LogIn, UserPlus } from 'lucide-react';
 
 const Navbar: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -20,14 +9,15 @@ const Navbar: React.FC = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const notifications = useState([
+  const [notifications, setNotifications] = useState([
     { id: 1, title: 'New case assigned', time: '2m ago', unread: true },
     { id: 2, title: 'Document review pending', time: '1h ago', unread: true },
     { id: 3, title: 'Meeting scheduled', time: '3h ago', unread: false },
-  ])[0];
+  ]);
   const [isNotificationOpen, setIsNotificationOpen] = useState(false);
   const { scrollY } = useScroll();
   const location = useLocation();
+  const navigate = useNavigate();
   const searchRef = useRef<HTMLInputElement>(null);
   const notificationRef = useRef<HTMLDivElement>(null);
   const profileRef = useRef<HTMLDivElement>(null);
@@ -139,7 +129,7 @@ const Navbar: React.FC = () => {
               ))}
             </div>
 
-            {/* Right Section with Notifications and Profile */}
+            {/* Right Section with Notifications, Profile, and Auth Buttons */}
             <div className="items-center hidden space-x-4 md:flex">
               {/* Search Button */}
               <motion.button
@@ -233,6 +223,26 @@ const Navbar: React.FC = () => {
                   )}
                 </AnimatePresence>
               </div>
+
+              {/* Login and Signup Buttons */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/login')}
+                className="px-4 py-2 text-sm font-medium text-white transition-colors rounded-md bg-primary hover:bg-primary-dark"
+              >
+                <LogIn className="inline-block w-4 h-4 mr-2" />
+                Login
+              </motion.button>
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => navigate('/signup')}
+                className="px-4 py-2 text-sm font-medium transition-colors bg-white border rounded-md text-primary border-primary hover:bg-primary hover:text-white"
+              >
+                <UserPlus className="inline-block w-4 h-4 mr-2" />
+                Sign Up
+              </motion.button>
             </div>
 
             {/* Mobile Menu Button */}
@@ -267,6 +277,55 @@ const Navbar: React.FC = () => {
           </div>
         </div>
       </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {isMobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: 'auto' }}
+            exit={{ opacity: 0, height: 0 }}
+            className="fixed inset-x-0 z-40 bg-white shadow-lg top-16"
+          >
+            <div className="px-4 py-2 space-y-2">
+              {navItems.map((item) => (
+                <Link
+                  key={item.id}
+                  to={item.path}
+                  className={`block py-2 text-gray-700 hover:text-primary ${
+                    location.pathname === item.path ? 'font-semibold text-primary' : ''
+                  }`}
+                  onClick={() => setIsMobileMenuOpen(false)}
+                >
+                  {item.label}
+                </Link>
+              ))}
+              <div className="flex flex-col pt-2 space-y-2 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    navigate('/login');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="py-2 text-sm font-medium text-white transition-colors rounded-md bg-primary hover:bg-primary-dark"
+                >
+                  <LogIn className="inline-block w-4 h-4 mr-2" />
+                  Login
+                </button>
+                <button
+                  onClick={() => {
+                    navigate('/signup');
+                    setIsMobileMenuOpen(false);
+                  }}
+                  className="py-2 text-sm font-medium transition-colors bg-white border rounded-md text-primary border-primary hover:bg-primary hover:text-white"
+                >
+                  <UserPlus className="inline-block w-4 h-4 mr-2" />
+                  Sign Up
+                </button>
+              </div>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Search Modal with Enhanced UX */}
       <AnimatePresence>
