@@ -1,20 +1,16 @@
 # ![Legal AI Logo](public/logo.png)
 
-**Legal AI** is a tool that simplifies the legal process for lawyers, judges, and users, making it easier to navigate the legal world. By using Generative AI and Blockchain Technology, it helps make legal work more efficient, transparent, and secure. Whether you're managing legal documents, researching cases, or tracking court dates, Legal AI brings everything together in one easy-to-use platform.
+**Legal AI** is a tool that simplifies the legal process for lawyers, judges, and users, making it easier to navigate the legal world. By using Generative AI and Blockchain Technology, it helps make legal work more efficient, transparent, and secure. Whether you're managing legal documents, researching cases, or tracking court dates, Legal AI brings everything together in one easy-to-use platform. It is a fully responsive and compatible with all device aspect ratios.
 
----
 
 DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mtQSlSUYT2dL8/edit?usp=sharing)
 
----
 
 ## Table of Contents
 - [Features](#key-features)
 - [Tech Stack](#tech-stack)
-- [Website Link](#website-link)
 - [Team Members](#team-members)
 
----
 
 ## Key Features
 
@@ -40,7 +36,6 @@ DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mt
 ### 6. **Advocate Diary**
 - **Case Management & Scheduling**: Stay organized with automatic reminders for court hearings, deadlines, and important case milestones.
 
----
 
 ## Tech Stack
 
@@ -53,10 +48,6 @@ DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mt
 | **Blockchain** | POW, SHA256 cryptographic algorithms                    |
 | **Database**   | MongoDB                                                 |
 
----
-
-## Website Link 
-Check out Legal AI website (Fully responsive and compatible with all device aspect ratios): [Link](https://legalai-eight.vercel.app)
 
 
 ## Team Members
