@@ -8,6 +8,7 @@
 - [Features](#key-features)
 - [Tech Stack](#tech-stack)
 - [Website Link](#website-link)
+- [Team Members](#team-members)
 
 ---
 
@@ -50,3 +51,11 @@
 
 ## Website Link 
 Check out Legal AI: [Link](https://legalai-eight.vercel.app)
+
+
+## Team Members
+1. [Akarsh Jain](https://www.linkedin.com/in/akarshjain158) B.Tech TY
+2. [Maitri Dalvi](https://www.linkedin.com/in/maitridalvi13/) B.Tech TY
+3. [Ojasvi Doye](https://www.linkedin.com/in/ojasvidoye) B.Tech TY
+4. [Ayush Yadav](https://www.linkedin.com/in/ayushyadav27) B.Tech SY
+
