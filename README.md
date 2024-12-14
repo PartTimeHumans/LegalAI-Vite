@@ -1,6 +1,10 @@
 # ![Legal AI Logo](public/logo.png)
 
-**Legal AI** is a tool that simplifies the legal process for lawyers, judges, and users, making it easier to navigate the legal world. By using AI and blockchain technology, it helps make legal work more efficient, transparent, and secure. Whether you're managing legal documents, researching cases, or tracking court dates, Legal AI brings everything together in one easy-to-use platform.
+**Legal AI** is a tool that simplifies the legal process for lawyers, judges, and users, making it easier to navigate the legal world. By using Generative AI and Blockchain Technology, it helps make legal work more efficient, transparent, and secure. Whether you're managing legal documents, researching cases, or tracking court dates, Legal AI brings everything together in one easy-to-use platform.
+
+---
+
+DOC Link: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mtQSlSUYT2dL8/edit?usp=sharing)
 
 ---
 
@@ -24,6 +28,8 @@
 
 ### 3. **Query Page (Chatbot)**
 - **AI Legal Advisor**: Get tailored legal advice to help you understand the next steps in your legal journey.
+- **Multilingual Translation**: Translates legal documents across Indian regional languages, ensuring
+ accessibility and eliminating the need for translators.
 
 ### 4. **Judge/Lawyer View**
 - **Blockchain-Secured Document Access**: Securely store and share legal documents with full confidentiality, using blockchain technology.
@@ -44,13 +50,13 @@
 | **Frontend**   | React.js, Tailwind CSS                                  |
 | **Backend**    | Node.js, Flask                                          |
 | **AI/ML**      | Hugging Face Transformers, Gemini AI                    |
-| **Blockchain** | POW, SHA256 cryptographic algorithm                     |
+| **Blockchain** | POW, SHA256 cryptographic algorithms                    |
 | **Database**   | MongoDB                                                 |
 
 ---
 
 ## Website Link 
-Check out Legal AI: [Link](https://legalai-eight.vercel.app)
+Check out Legal AI website (Fully responsive and compatible with all device aspect ratios): [Link](https://legalai-eight.vercel.app)
 
 
 ## Team Members
