@@ -9,7 +9,7 @@ const Navbar: React.FC = () => {
   const [isProfileDropdownOpen, setIsProfileDropdownOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [notifications, setNotifications] = useState([
+  const [notifications] = useState([
     { id: 1, title: 'New case assigned', time: '2m ago', unread: true },
     { id: 2, title: 'Document review pending', time: '1h ago', unread: true },
     { id: 3, title: 'Meeting scheduled', time: '3h ago', unread: false },
