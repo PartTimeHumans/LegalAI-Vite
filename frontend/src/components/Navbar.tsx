@@ -67,7 +67,12 @@ const Navbar: React.FC = () => {
       label: 'Advocate Diary',
       id: 'advocate-diary',
       path: '/advocate-diary'
-    }
+    },
+    {
+      label: 'Document Sharing',
+      id: 'document-sharing',
+      path: '/document-sharing'
+    },
   ];
 
   const searchResults = [
