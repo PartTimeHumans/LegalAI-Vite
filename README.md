@@ -43,7 +43,7 @@
 | **Frontend**   | React.js, Tailwind CSS                                  |
 | **Backend**    | Node.js, Flask                                          |
 | **AI/ML**      | Hugging Face Transformers, Gemini AI                    |
-| **Blockchain** | Hyperledger Fabric                                      |
+| **Blockchain** | POW, SHA256 cryptographic algorithm                     |
 | **Database**   | MongoDB                                                 |
 
 ---
