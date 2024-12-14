@@ -4,7 +4,7 @@
 
 ---
 
-DOC Link: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mtQSlSUYT2dL8/edit?usp=sharing)
+DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mtQSlSUYT2dL8/edit?usp=sharing)
 
 ---
 
