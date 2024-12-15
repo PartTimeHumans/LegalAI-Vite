@@ -56,7 +56,6 @@ const DocumentSummarizer: React.FC = () => {
   const processDocument = async (selectedFile: File) => {
     setIsProcessing(true);
 
-    // Upload document to the backend
     const formData = new FormData();
     formData.append('file', selectedFile);
 
@@ -69,11 +68,10 @@ const DocumentSummarizer: React.FC = () => {
       const uploadData = await uploadResponse.json();
       const { file_id } = uploadData;
 
-      // Request the summary using the file ID
       const summaryResponse = await fetch(`127.0.0.1:5000/api/ml/v1/summary?document_id=${file_id}`);
       const summaryData = await summaryResponse.json();
 
-      setSummary(summaryData.summary); // Assuming the API returns a 'summary' field
+      setSummary(summaryData.summary);
       setIsProcessing(false);
       setActiveStep(2);
     } catch (error) {
