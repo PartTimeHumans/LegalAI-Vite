@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import Navbar from './components/Navbar';
@@ -14,23 +14,8 @@ import DocumentSharing from './pages/DocumentSharing';
 import JudgeDashboard from './pages/JudgeDashboard';
 import LawyerDashboard from './pages/LawyerDashboard';
 import UserDashboard from './pages/UserDashboard';
-=======
-import React from "react";
-import { Routes, Route } from "react-router-dom";
-import Navbar from "./components/Navbar";
-import LandingPage from "./pages/LandingPage";
-import Summarisation from "./pages/Summarisation";
-import Transcript from "./pages/Transcript";
-import DocumentQuery from "./pages/DocumentQuery";
-import Draft from "./pages/Draft";
-import AdvocateDiary from "./pages/AdvocateDiary";
-import ChatSection from "./components/Chatbot";
-import AuthPage from "./pages/AuthPage";
-import DocumentSharing from "./pages/DocumentSharing";
-import LawyerDashboard from "./pages/LawyerDashboard";
-import JudgeDashboard from "./pages/JudgeDashboard";
 import PrivateRoute from "./routes/PrivateRoute";
->>>>>>> f626b8e (update permissions)
+
 
 const App: React.FC = () => {
   return (
