@@ -168,7 +168,7 @@ const AuthPage: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-background to-secondary/10">
+    <div className="flex items-center justify-center min-h-screen p-4 bg-gradient-to-b from-background to-secondary/10 overflow-hidden ">
       <motion.div
         variants={containerVariants}
         initial="hidden"
