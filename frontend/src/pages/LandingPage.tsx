@@ -81,7 +81,7 @@ const LandingPage: React.FC = () => {
     <div className="min-h-screen bg-gradient-to-b from-background to-secondary/10">
       {/* Hero Section */}
       <div className="relative overflow-hidden">
-        <motion.div 
+        <motion.div
           initial="hidden"
           animate="visible"
           variants={fadeInUp}
@@ -96,20 +96,20 @@ const LandingPage: React.FC = () => {
             >
               <Scale className="w-10 h-10 text-primary" />
             </motion.div>
-            <motion.h1 
+            <motion.h1
               className="mb-6 text-5xl font-bold text-transparent md:text-7xl bg-gradient-to-r from-primary to-primary-dark bg-clip-text"
               variants={fadeInUp}
             >
               Legal Innovation Meets Artificial Intelligence
             </motion.h1>
-            <motion.p 
+            <motion.p
               className="mb-8 text-xl text-gray-600"
               variants={fadeInUp}
             >
-              Transform your legal practice with cutting-edge AI technology. 
+              Transform your legal practice with cutting-edge AI technology.
               Streamline workflows, enhance decision-making, and deliver superior legal services.
             </motion.p>
-            <motion.div 
+            <motion.div
               className="flex gap-4"
               variants={fadeInUp}
             >
@@ -130,13 +130,13 @@ const LandingPage: React.FC = () => {
             <motion.div
               key={i}
               className="absolute w-2 h-2 rounded-full bg-primary/20"
-              initial={{ 
+              initial={{
                 x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight 
+                y: Math.random() * window.innerHeight
               }}
-              animate={{ 
+              animate={{
                 x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight 
+                y: Math.random() * window.innerHeight
               }}
               transition={{
                 duration: Math.random() * 10 + 5,
@@ -151,7 +151,7 @@ const LandingPage: React.FC = () => {
       {/* Features Section */}
       <section className="py-20 bg-white">
         <div className="container px-4 mx-auto">
-          <motion.div 
+          <motion.div
             className="grid gap-8 md:grid-cols-3"
             initial="hidden"
             whileInView="visible"
@@ -180,7 +180,7 @@ const LandingPage: React.FC = () => {
       {/* Statistics Section */}
       <section className="py-20 bg-primary/5">
         <div className="container px-4 mx-auto">
-          <motion.div 
+          <motion.div
             className="grid grid-cols-2 gap-8 md:grid-cols-4"
             initial="hidden"
             whileInView="visible"
@@ -205,7 +205,7 @@ const LandingPage: React.FC = () => {
       {/* Benefits Section */}
       <section className="py-20 bg-white">
         <div className="container px-4 mx-auto">
-          <motion.div 
+          <motion.div
             className="grid items-center gap-12 md:grid-cols-2"
             initial="hidden"
             whileInView="visible"
@@ -216,7 +216,7 @@ const LandingPage: React.FC = () => {
               <h2 className="mb-6 text-4xl font-bold">Why Choose Legal AI?</h2>
               <div className="space-y-4">
                 {benefits.map((item, index) => (
-                  <motion.div 
+                  <motion.div
                     key={index}
                     className="flex items-center gap-3"
                     custom={index}
@@ -228,14 +228,18 @@ const LandingPage: React.FC = () => {
                 ))}
               </div>
             </div>
-            <motion.div 
+            <motion.div
               className="relative h-[400px]"
               initial={{ opacity: 0, x: 100 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
             >
               <div className="absolute inset-0 overflow-hidden bg-gradient-to-r from-primary/20 to-secondary/20 rounded-2xl">
-                <img src={homeimg} alt="Legal AI dashboard" className="w-full h-full" />
+                <img
+                  src={homeimg}
+                  alt="Legal AI dashboard"
+                  className="w-full h-full sm:object-cover sm:object-[5%_center]"
+                />
               </div>
             </motion.div>
           </motion.div>
@@ -312,7 +316,7 @@ const LandingPage: React.FC = () => {
             <p>© {new Date().getFullYear()} Legal AI. All rights reserved.</p>
             <p>Made with ❤️ by Team PartTimeHumans</p>
             <p>
-              Follow us on 
+              Follow us on
               <a href="https://x.com/mai3dalvi" className="mx-1 text-primary hover:underline">X</a>&
               <a href="https://www.linkedin.com/in/maitridalvi13/" className="mx-1 text-primary hover:underline">LinkedIn</a>
             </p>
