@@ -123,17 +123,17 @@ const AuthPage: React.FC = () => {
       const result = await response.json();
 
       if (response.ok) {
-        setSuccessMessage(
-          isSignUp ? "Sign up successful!" : "Login successful!"
-        );
+        setSuccessMessage('Login successful!');
+        const role = result.userData.role;
 
-        Cookies.set("authToken", result.token, { expires: 1 });
-        Cookies.set("userRole", result.userData.role, { path: "/" });
-
-        if (result.userData.role === "Lawyer") {
-          navigate("/LawyerDashboard");
-        } else if (result.userData.role === "judge") {
-          navigate("/JudgeDashboard");
+        if (result.token) {
+          localStorage.setItem('authToken', result.token);
+          localStorage.setItem('role', result.userData.role);
+          if(role === "Lawyer"){
+            navigate('/lawyer');
+          }else if(role === "Judge"){
+            navigate('/judge');
+          }
         } else {
           navigate("/UserDashboard");
         }
