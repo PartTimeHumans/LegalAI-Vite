@@ -14,7 +14,7 @@ DOC: [Link](https://docs.google.com/document/d/1KRmRlgPtuAJyMsWlc63lII8Nc8iXNgBG
 
 ## Key Features
 
-### 1. **Doc AI Page** 
+### 1. **AI.Doc Page** 
 - **Summarization**: Turn long, complex legal documents into concise, easy-to-read summaries.  
 - **Transcript Simplification**: Simplify dense court transcripts into clear, actionable information.  
 - **Smart Document Queries**: Ask specific questions about your documents and get quick, context-driven answers.
@@ -27,8 +27,8 @@ DOC: [Link](https://docs.google.com/document/d/1KRmRlgPtuAJyMsWlc63lII8Nc8iXNgBG
 - **Multilingual Translation**: Translates legal documents across Indian regional languages, ensuring
  accessibility and eliminating the need for translators.
 
-### 4. **Judge/Lawyer View**
-- **Blockchain-Secured Document Access**: Securely store and share legal documents with full confidentiality, using blockchain technology.
+### 4. **Confi.Doc Page**
+- **Blockchain-Secured Document Access**: Securely store court-issued documents. Access is managed through unique hashes for confidentiality and security.
 
 ### 5. **Draft Page**
 - **Legal Templates**: Easily create and download customizable drafts generated through AI for common legal documents like contracts, NDAs, and affidavits.
