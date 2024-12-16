@@ -18,7 +18,7 @@ import ForbiddenPage from "./pages/ForbiddenPage";
 const App: React.FC = () => {
   const location = useLocation();
 
-  const noNavbarRoutes = ["/login", "/signup", "/forbidden"];
+  const noNavbarRoutes = ["/", "/login", "/signup", "/forbidden"];
 
   return (
     <div className="flex flex-col min-h-screen">

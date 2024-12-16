@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo, useEffect } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import {
   motion,
@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
         path: "/advocate-diary",
       },
       {
-        label: "Document Sharing",
+        label: "Confi.Doc",
         id: "document-sharing",
         path: "/document-sharing",
       },

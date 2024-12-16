@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { CalendarIcon, Clock, FileText, Bell, Plus, Search,Maximize2, Minimize2, RotateCcw, Trash2, CheckCircle, Edit } from 'lucide-react';
 import Calendar from '../components/Calender';
-import { Case, Reminder, Event } from '../types/types';
+import { Case, Reminder } from '../types/types';
 import { formatDate, sortByDate, filterItemsBySearch, combineEvents } from '../utils/utils';
 import { dummyCases, dummyReminders } from '../data/data';
 
@@ -75,6 +75,7 @@ const AdvocateDiary: React.FC = () => {
   const deleteReminder = useCallback((id: string) => {
     setReminders(prevReminders => prevReminders.filter(reminder => reminder.id !== id));
   }, []);
+
 
   const filteredCases = useMemo(() => 
     filterItemsBySearch(sortByDate(cases), searchQuery),
