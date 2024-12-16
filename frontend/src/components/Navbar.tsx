@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
     { label: 'Document Query', id: 'doc-query', path: '/query' },
     { label: 'Draft', id: 'draft', path: '/draft' },
     { label: 'Advocate Diary', id: 'advocate-diary', path: '/advocate-diary' },
-    { label: 'Document Sharing', id: 'document-sharing', path: '/document-sharing' },
+    { label: 'Confi.Doc', id: 'document-sharing', path: '/document-sharing' },
   ], []);
 
   const handleScroll = useCallback(() => {

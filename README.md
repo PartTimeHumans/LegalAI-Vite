@@ -45,7 +45,7 @@ DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mt
 | **Frontend**   | React.js, Tailwind CSS                                  |
 | **Backend**    | Node.js, Flask                                          |
 | **AI/ML**      | Hugging Face Transformers, Gemini AI                    |
-| **Blockchain** | POW, SHA256 cryptographic algorithms                    |
+| **Blockchain** | SHA256 cryptographic algorithm & IPFS                   |
 | **Database**   | MongoDB                                                 |
 
 
