@@ -24,7 +24,6 @@ const App: React.FC = () => {
             <Route path="/" element={<LandingPage />} />
             <Route path="/judge" element={<JudgeDashboard />} />
             <Route path="/lawyer" element={<LawyerDashboard />} />
-            <Route path="/user" element={<UserDashboard />} />
             <Route path="/summarisation" element={<Summarisation />} />
             <Route path="/transcript" element={<Transcript />} />
             <Route path="/query" element={<DocumentQuery />} />
