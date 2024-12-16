@@ -16,6 +16,7 @@ import {
 interface Step {
   title: string;
   description: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   icon: React.ComponentType<any>;
 }
 
@@ -60,7 +61,7 @@ const DocumentSummarizer: React.FC = () => {
     formData.append('file', selectedFile);
 
     try {
-      const uploadResponse = await fetch('/api/ml/v1/upload', {
+      const uploadResponse = await fetch('http://127.0.0.1:5000/api/ml/v1/upload', {
         method: 'POST',
         body: formData,
       });
@@ -68,10 +69,20 @@ const DocumentSummarizer: React.FC = () => {
       const uploadData = await uploadResponse.json();
       const { file_id } = uploadData;
 
-      const summaryResponse = await fetch(`127.0.0.1:5000/api/ml/v1/summary?document_id=${file_id}`);
+      // const summaryResponse = await fetch(`http://127.0.0.1:5000/api/ml/v1/summary?document_id=${file_id}`);
+      const summaryResponse = await fetch("http://127.0.0.1:5000/api/ml/v1/summary", {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+              document_id: file_id,
+          }),
+      });
       const summaryData = await summaryResponse.json();
+      console.log(summaryData);
 
-      setSummary(summaryData.summary);
+      setSummary(summaryData.chat_response);
       setIsProcessing(false);
       setActiveStep(2);
     } catch (error) {

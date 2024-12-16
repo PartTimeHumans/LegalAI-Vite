@@ -11,7 +11,6 @@ import {
   UserIcon as UserTie,
   User,
 } from "lucide-react";
-import Cookies from "js-cookie";
 
 type Role = "judge" | "lawyer" | "user";
 
