@@ -135,7 +135,7 @@ const AuthPage: React.FC = () => {
         } else if (result.userData.role === "judge") {
           navigate("/JudgeDashboard");
         } else {
-          navigate("/dashboard");
+          navigate("/UserDashboard");
         }
       } else {
         setError(result.message || "Something went wrong.");

@@ -43,6 +43,16 @@ const Navbar: React.FC = () => {
   );
 
   const isLoggedIn = Boolean(Cookies.get("authToken"));
+  const userRole = Cookies.get("userRole");
+
+  const filteredNavItems = useMemo(() => {
+    if (userRole === "user") {
+      return navItems.filter(
+        (item) => item.id === "summarisation" || item.id === "transcript"
+      );
+    }
+    return navItems;
+  }, [userRole, navItems]);
 
   const handleScroll = useCallback(() => {
     setIsScrolled(scrollY.get() > 20);
@@ -95,7 +105,7 @@ const Navbar: React.FC = () => {
             </Link>
 
             <div className="items-center hidden space-x-8 md:flex">
-              {navItems.map((item) => (
+              {filteredNavItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.path}
@@ -186,7 +196,7 @@ const Navbar: React.FC = () => {
             className="fixed inset-x-0 z-40 bg-white shadow-lg top-16"
           >
             <div className="px-4 py-2 space-y-2">
-              {navItems.map((item) => (
+              {filteredNavItems.map((item) => (
                 <Link
                   key={item.id}
                   to={item.path}

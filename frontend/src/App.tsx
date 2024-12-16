@@ -14,6 +14,7 @@ import LawyerDashboard from "./pages/LawyerDashboard";
 import JudgeDashboard from "./pages/JudgeDashboard";
 import PrivateRoute from "./routes/PrivateRoute";
 import ForbiddenPage from "./pages/ForbiddenPage";
+import UserDashboard from "./pages/UserDashboard";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -38,6 +39,16 @@ const App: React.FC = () => {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/forbidden" element={<ForbiddenPage />} />
+            
+            <Route
+              path="/UserDashboard"
+              element={
+                <PrivateRoute
+                  element={<UserDashboard />}
+                  requiredRole="user"
+                />
+              }
+            />
             <Route
               path="/JudgeDashboard"
               element={
