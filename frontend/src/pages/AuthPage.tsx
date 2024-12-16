@@ -1,7 +1,17 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
-import { motion, AnimatePresence, Variants } from 'framer-motion';
-import { Scale, Mail, Lock, Eye, EyeOff, Gavel, UserIcon as UserTie, User } from 'lucide-react';
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+import { motion, AnimatePresence, Variants } from "framer-motion";
+import {
+  Scale,
+  Mail,
+  Lock,
+  Eye,
+  EyeOff,
+  Gavel,
+  UserIcon as UserTie,
+  User,
+} from "lucide-react";
+import Cookies from "js-cookie";
 
 type Role = "judge" | "lawyer" | "user";
 
@@ -75,10 +85,13 @@ const AuthPage: React.FC = () => {
       inputs.role
     : inputs.email && inputs.password;
 
-  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
-  }, []);
+  const handleInputChange = useCallback(
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      const { name, value } = e.target;
+      setInputs((prevInputs) => ({ ...prevInputs, [name]: value }));
+    },
+    []
+  );
 
   const handleRoleChange = useCallback((role: Role) => {
     setInputs((prevInputs) => ({ ...prevInputs, role }));
@@ -128,12 +141,14 @@ const AuthPage: React.FC = () => {
         setError(result.message || "Something went wrong.");
       }
     } catch (err) {
-      setError('Failed to connect to the server. Please check your connection.');
+      setError(
+        "Failed to connect to the server. Please check your connection."
+      );
       console.error(err);
     } finally {
       setIsLoading(false);
     }
-  }, [inputs.email, inputs.password, navigate]);
+  }, [inputs, isSignUp, navigate]);
 
   useEffect(() => {
     setInputs({
@@ -189,7 +204,7 @@ const AuthPage: React.FC = () => {
             <Lock className="absolute w-5 h-5 text-gray-400 top-3 left-3" />
             <input
               className="w-full py-3 pl-10 pr-10 transition-all duration-300 ease-in-out bg-gray-100 rounded-lg focus:ring-2 focus:ring-primary"
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Password"
               name="password"
               value={inputs.password}
@@ -249,18 +264,21 @@ const AuthPage: React.FC = () => {
               >
                 <label className="text-sm font-medium">Select your role:</label>
                 <div className="flex flex-wrap gap-2 sm:flex-nowrap">
-                  {(['judge', 'lawyer', 'user'] as Role[]).map((role) => (
+                  {(["judge", "lawyer", "user"] as Role[]).map((role) => (
                     <motion.button
                       key={role}
                       onClick={() => handleRoleChange(role)}
                       className={`flex-1 py-2 px-4 text-sm font-medium rounded-lg transition-all duration-300 ease-in-out ${
-                        inputs.role === role ? 'bg-primary text-white' : 'bg-gray-100 hover:bg-gray-200'
+                        inputs.role === role
+                          ? "bg-primary text-white"
+                          : "bg-gray-100 hover:bg-gray-200"
                       }`}
                       whileHover={{ scale: 1.05 }}
                       whileTap={{ scale: 0.95 }}
                     >
                       <div className="flex items-center justify-center">
-                        {roleIcons[role]} <span className="ml-2 capitalize">{role}</span>
+                        {roleIcons[role]}{" "}
+                        <span className="ml-2 capitalize">{role}</span>
                       </div>
                     </motion.button>
                   ))}
@@ -274,7 +292,9 @@ const AuthPage: React.FC = () => {
             onClick={handleAuth}
             disabled={!isFormValid || isLoading}
             className={`w-full py-3 text-white rounded-lg transition-all duration-300 ease-in-out ${
-              isFormValid ? 'bg-primary hover:bg-primary-dark' : 'bg-gray-400 cursor-not-allowed'
+              isFormValid
+                ? "bg-primary hover:bg-primary-dark"
+                : "bg-gray-400 cursor-not-allowed"
             }`}
             whileHover={isFormValid ? { scale: 1.05 } : {}}
             whileTap={isFormValid ? { scale: 0.95 } : {}}
@@ -286,20 +306,22 @@ const AuthPage: React.FC = () => {
                 className="w-6 h-6 border-2 border-white rounded-full border-t-transparent"
               />
             ) : (
-              <>{isSignUp ? 'Sign Up' : 'Log In'}</>
+              <>{isSignUp ? "Sign Up" : "Log In"}</>
             )}
           </motion.button>
 
           <AnimatePresence mode="wait">
             {(error || successMessage) && (
               <motion.div
-                key={error ? 'error' : 'success'}
+                key={error ? "error" : "success"}
                 variants={itemVariants}
                 initial="hidden"
                 animate="visible"
                 exit="exit"
                 className={`text-center p-2 rounded-lg ${
-                  error ? 'bg-red-100 text-red-600' : 'bg-green-100 text-green-600'
+                  error
+                    ? "bg-red-100 text-red-600"
+                    : "bg-green-100 text-green-600"
                 }`}
               >
                 {error || successMessage}
