@@ -34,16 +34,16 @@ router.post("/register", async (request, response) => {
 */
 router.post("/login", async (request, response) => {
   try {
-    //? Getting the JWT token
-    const { userData, token, error } = await login(request);
+    const { userData, error } = await login(request, response);  // Pass response to login function
     if (error) {
-      return response.status(400).send(error);
+      return response.status(400).send({ error });
     } else {
-      response.status(200).send({ userData, token });
+      return response.status(200).send({ userData });  // Return user data along with success message
     }
   } catch (e) {
     response.status(500).send({ message: "Internal server error" });
   }
 });
+
 
 export default router;

@@ -1,16 +1,17 @@
-import { verify } from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
-export default function (request, response, next) {
-  const token = request.header("auth-token");
+const authenticate = (req, res, next) => {
+  const token = req.cookies.authToken;
+
   if (!token) {
-    return response.status(401).send("Access Denied");
+    return res.status(401).json({ error: 'No token provided' });
   }
 
   try {
-    const verified = verify(token, process.env.TOKEN_SECRET);
-    request.user = verified;
+    const decoded = jwt.verify(token, process.env.TOKEN_SECRET);
+    req.user = decoded;
     next();
-  } catch (error) {
-    response.status(400).send("Invalid Token");
+  } catch (err) {
+    return res.status(401).json({ error: 'Invalid token' });
   }
-}
+};
