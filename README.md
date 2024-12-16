@@ -3,7 +3,7 @@
 **Legal AI** is a tool that simplifies the legal process for lawyers, judges, and users, making it easier to navigate the legal world. By using Generative AI and Blockchain Technology, it helps make legal work more efficient, transparent, and secure. Whether you're managing legal documents, researching cases, or tracking court dates, Legal AI brings everything together in one easy-to-use platform. It is a fully responsive and compatible with all device aspect ratios.
 
 
-DOC: [Link](https://docs.google.com/document/d/1X82T9v-B_wLaX6Nsn625RXe8C8dp58mtQSlSUYT2dL8/edit?usp=sharing)
+DOC: [Link](https://docs.google.com/document/d/1KRmRlgPtuAJyMsWlc63lII8Nc8iXNgBGv0SjS7kbS1E/edit?usp=sharing)
 
 
 ## Table of Contents
