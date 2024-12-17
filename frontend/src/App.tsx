@@ -39,8 +39,10 @@ const App: React.FC = () => {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/forbidden" element={<ForbiddenPage />} />
-            
-            <Route
+            <Route path="/JudgeDashboard" element={<JudgeDashboard />} />
+            <Route path="/UserDashboard" element={<UserDashboard />} />
+
+            {/* <Route
               path="/UserDashboard"
               element={
                 <PrivateRoute
@@ -48,8 +50,8 @@ const App: React.FC = () => {
                   requiredRole="user"
                 />
               }
-            />
-            <Route
+            /> */}
+            {/* <Route
               path="/JudgeDashboard"
               element={
                 <PrivateRoute
@@ -57,7 +59,7 @@ const App: React.FC = () => {
                   requiredRole="judge"
                 />
               }
-            />
+            /> */}
 
             <Route
               path="/LawyerDashboard"
