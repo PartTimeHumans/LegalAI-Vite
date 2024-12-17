@@ -44,9 +44,9 @@ DOC: [Link](https://docs.google.com/document/d/1KRmRlgPtuAJyMsWlc63lII8Nc8iXNgBG
 | **Language**   | TypeScript, Python                                      |
 | **Frontend**   | React.js, Tailwind CSS                                  |
 | **Backend**    | Node.js, Flask                                          |
-| **AI/ML**      | Hugging Face Transformers, Gemini AI                    |
+| **AI/ML**      | Hugging Face Transformers, Gemini AI, Linear Regression                    |
 | **Blockchain** | SHA256 cryptographic algorithm & IPFS                   |
-| **Database**   | MongoDB                                                 |
+| **Database**   | MongoDB, Redis                                                 |
 
 
 
