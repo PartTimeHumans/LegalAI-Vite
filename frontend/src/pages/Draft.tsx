@@ -1,38 +1,108 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { useForm, SubmitHandler } from 'react-hook-form';
+import axios from 'axios';
 import Showdown from 'showdown';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 import html2pdf from 'html2pdf.js';
-import { generateDocument } from '../routes/route';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  FileText, 
-  Download, 
-  File, 
-  Loader, 
-  AlertCircle, 
-  CheckCircle,
-  Maximize2,
-  Minimize2,
-  RotateCcw
-} from 'lucide-react';
+import { FileText, Download, File, Loader, AlertCircle, CheckCircle, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
 
-// Enhanced Type Definitions
-type TemplateType = 'Contract' | 'Agreement' | 'Will' | 'Affidavit';
+// Type Definitions
+type DocumentType = 'Contract' | 'Agreement' | 'Will' | 'Affidavit' | 'Other';
 
 interface FormInputs {
   prompt: string;
-  template: TemplateType;
-  contractType: string;
-  agreementType: string;
-  willType: string;
-  affidavitType: string;
+  documentType: DocumentType;
+  numQuestions: number;
 }
 
+interface GeminiResponse {
+  candidates: Array<{
+    content: {
+      parts: Array<{
+        text: string;
+      }>;
+    };
+  }>;
+}
+
+const API_KEY = import.meta.env.VITE_API_KEY;
+const API_URL = import.meta.env.VITE_API_URL;
+
+const axiosInstance = axios.create({
+  baseURL: API_URL,
+  headers: {
+    'Content-Type': 'application/json',
+  },
+});
+
+const generateQuestions = async (params: {
+  prompt: string;
+  documentType: DocumentType;
+  numQuestions: number;
+}): Promise<string> => {
+  if (!params.prompt || !params.documentType || !params.numQuestions) {
+    throw new Error('Prompt, document type, and number of questions are required');
+  }
+
+  const formattedPrompt = `Generate ${params.numQuestions} questions for a legal ${params.documentType.toLowerCase()} document with the following details:
+    Type: ${params.documentType}
+    Details: ${params.prompt}
+    Please provide professional and legally relevant questions.`;
+
+  try {
+    const response = await axiosInstance.post(`${API_URL}?key=${API_KEY}`, {
+      contents: [{
+        parts: [{
+          text: formattedPrompt
+        }]
+      }],
+      safetySettings: [
+        {
+          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
+          threshold: "BLOCK_ONLY_HIGH"
+        },
+        {
+          category: "HARM_CATEGORY_HATE_SPEECH",
+          threshold: "BLOCK_ONLY_HIGH"
+        },
+        {
+          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+          threshold: "BLOCK_ONLY_HIGH"
+        },
+        {
+          category: "HARM_CATEGORY_HARASSMENT",
+          threshold: "BLOCK_ONLY_HIGH"
+        }
+      ],
+      generationConfig: {
+        temperature: 0.7,
+        topK: 40,
+        topP: 0.95,
+        maxOutputTokens: 2048,
+      }
+    });
+
+    const data: GeminiResponse = response.data;
+    if (!data.candidates || data.candidates.length === 0 || !data.candidates[0].content.parts[0].text) {
+      throw new Error('No valid response from the AI service');
+    }
+    return data.candidates[0].content.parts[0].text;
+
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      console.error('Axios error:', error.response?.data || error.message);
+      throw new Error(`Failed to generate questions: ${error.response?.data?.error?.message || error.message}`);
+    } else {
+      console.error('Error generating questions:', error);
+      throw error;
+    }
+  }
+};
+
 const LegalDocumentGenerator: React.FC = () => {
-  // Improved State Management
-  const [code, setCode] = useState<string>('');
+  const [questions, setQuestions] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
   const [generationStatus, setGenerationStatus] = useState<{
     pdf: boolean;
@@ -41,38 +111,24 @@ const LegalDocumentGenerator: React.FC = () => {
   const [apiError, setApiError] = useState<string | null>(null);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
 
-  // Performance Optimization: Memoized Converter
   const converter = useMemo(() => new Showdown.Converter(), []);
   const { 
     register, 
     handleSubmit, 
-    watch, 
-    setValue, 
     formState: { errors } 
   } = useForm<FormInputs>();
 
-  // Memoized Markdown Removal Function
   const removeMarkdown = useCallback((text: string): string => {
-    const start = text.indexOf("```jsx");
-    const end = text.lastIndexOf("```");
-    return start !== -1 && end > start ? text.slice(start + 6, end) : text;
+    const start = text.indexOf("\`\`\`");
+    const end = text.lastIndexOf("\`\`\`");
+    return start !== -1 && end > start ? text.slice(start + 3, end).trim() : text;
   }, []);
 
-  // Optimized Submission Handler
   const onSubmit: SubmitHandler<FormInputs> = useCallback(async (data) => {
-    const { prompt, template } = data;
+    const { prompt, documentType, numQuestions } = data;
 
-    if (!prompt || !template) {
-      setApiError("Prompt and template are required.");
-      return;
-    }
-
-    // Dynamic Type Selection
-    const subtypeKey = `${template.toLowerCase()}Type` as keyof FormInputs;
-    const selectedSubtype = data[subtypeKey];
-
-    if (!selectedSubtype) {
-      setApiError(`Please select a ${template} type.`);
+    if (!prompt || !documentType || !numQuestions) {
+      setApiError("Prompt, document type, and number of questions are required.");
       return;
     }
 
@@ -81,24 +137,20 @@ const LegalDocumentGenerator: React.FC = () => {
     setGenerationStatus({ pdf: false, docx: false });
 
     try {
-      const response = await generateDocument({
+      const response = await generateQuestions({
         prompt,
-        template,
-        contractType: template === 'Contract' ? selectedSubtype : undefined,
-        agreementType: template === 'Agreement' ? selectedSubtype : undefined,
-        willType: template === 'Will' ? selectedSubtype : undefined,
-        affidavitType: template === 'Affidavit' ? selectedSubtype : undefined,
+        documentType,
+        numQuestions,
       });
-      setCode(removeMarkdown(response.code));
+      setQuestions(removeMarkdown(response));
     } catch (error) {
       console.error("Error:", error);
-      setApiError("An error occurred while generating the document. Please try again.");
+      setApiError(error instanceof Error ? error.message : "An error occurred while generating the questions.");
     } finally {
       setLoading(false);
     }
   }, [removeMarkdown]);
 
-  // Memoized PDF Download Handler
   const handleDownloadPDF = useCallback(async (): Promise<void> => {
     const element = document.getElementById("pdf-content");
     if (!element) {
@@ -108,7 +160,7 @@ const LegalDocumentGenerator: React.FC = () => {
 
     const options = {
       margin: 1,
-      filename: "legal_document.pdf",
+      filename: "legal_document_questions.pdf",
       image: { type: "jpeg", quality: 0.98 },
       html2canvas: { scale: 2 },
       jsPDF: { unit: "in", format: "letter", orientation: "portrait" }
@@ -123,39 +175,35 @@ const LegalDocumentGenerator: React.FC = () => {
     }
   }, []);
 
-  // Memoized DOCX Download Handler
   const handleDownloadDocx = useCallback((): void => {
-    if (!code) {
-      setApiError("No content to generate DOCX. Please generate content first.");
+    if (!questions) {
+      setApiError("No content to generate DOCX. Please generate questions first.");
       return;
     }
 
     const doc = new Document({
       sections: [{
         properties: {},
-        children: code.split("\n").map(line => 
+        children: questions.split("\n").map(line => 
           new Paragraph({ children: [new TextRun(line)] })
         ),
       }]
     });
 
     Packer.toBlob(doc).then(blob => {
-      saveAs(blob, "legal_document.docx");
+      saveAs(blob, "legal_document_questions.docx");
       setGenerationStatus(prev => ({ ...prev, docx: true }));
     }).catch(error => {
       console.error("DOCX generation error:", error);
       setApiError("Failed to generate DOCX. Please try again.");
     });
-  }, [code]);
+  }, [questions]);
 
-  // Memoized Reset Function
   const resetForm = useCallback(() => {
-    setCode('');
+    setQuestions('');
     setApiError(null);
     setGenerationStatus({ pdf: false, docx: false });
   }, []);
-
-  const template = watch("template");
 
   return (
     <motion.div 
@@ -169,7 +217,6 @@ const LegalDocumentGenerator: React.FC = () => {
         className={`bg-white rounded-xl shadow-2xl overflow-hidden transition-all duration-300 ease-in-out 
           ${isExpanded ? 'w-full h-full' : 'w-[90%] h-[85vh]'}`}
       >
-        {/* Header */}
         <motion.div 
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -177,7 +224,7 @@ const LegalDocumentGenerator: React.FC = () => {
         >
           <h2 className="flex items-center space-x-2 text-2xl font-bold text-primary">
             <FileText className="w-6 h-6 text-primary" />
-            <span>Legal Document Generator</span>
+            <span>AI Legal Document Question Generator</span>
           </h2>
           <div className="flex space-x-2">
             <motion.button 
@@ -212,12 +259,12 @@ const LegalDocumentGenerator: React.FC = () => {
             >
               <motion.div layout>
                 <label htmlFor="prompt" className="block text-sm font-medium text-gray-700">
-                  Enter description
+                  Enter document details
                 </label>
                 <textarea
                   id="prompt"
-                  {...register("prompt", { required: "Description is required" })}
-                  placeholder="Provide detailed information, including names, dates, conditions, and any relevant context..."
+                  {...register("prompt", { required: "Document details are required" })}
+                  placeholder="Provide detailed information for the legal document, including names, dates, conditions, and any relevant context..."
                   className="block w-full px-3 py-2 mt-1 border rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary min-h-[100px]"
                 />
                 {errors.prompt && (
@@ -232,57 +279,58 @@ const LegalDocumentGenerator: React.FC = () => {
               </motion.div>
 
               <motion.div layout>
-                <label htmlFor="template" className="block text-sm font-medium text-gray-700">
-                  Choose Template
+                <label htmlFor="documentType" className="block text-sm font-medium text-gray-700">
+                  Choose Document Type
                 </label>
                 <select
-                  id="template"
-                  {...register("template", { required: "Template is required" })}
+                  id="documentType"
+                  {...register("documentType", { required: "Document type is required" })}
                   className="block w-full px-3 py-2 mt-1 border rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                  onChange={(e) => {
-                    setValue("template", e.target.value as TemplateType);
-                    setValue("contractType", "");
-                    setValue("agreementType", "");
-                    setValue("willType", "");
-                    setValue("affidavitType", "");
-                  }}
                 >
-                  <option value="">Choose Template</option>
+                  <option value="">Select Document Type</option>
                   <option value="Contract">Contract</option>
                   <option value="Agreement">Agreement</option>
                   <option value="Will">Will</option>
                   <option value="Affidavit">Affidavit</option>
+                  <option value="Other">Other</option>
                 </select>
+                {errors.documentType && (
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-2 text-sm text-red-600"
+                  >
+                    {errors.documentType.message}
+                  </motion.p>
+                )}
               </motion.div>
 
-              <AnimatePresence>
-                {template === "Contract" && (
-                  <motion.div
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="overflow-hidden"
+              <motion.div layout>
+                <label htmlFor="numQuestions" className="block text-sm font-medium text-gray-700">
+                  Number of Questions
+                </label>
+                <input
+                  type="number"
+                  id="numQuestions"
+                  {...register("numQuestions", { 
+                    required: "Number of questions is required",
+                    min: { value: 1, message: "Minimum 1 question" },
+                    max: { value: 20, message: "Maximum 20 questions" }
+                  })}
+                  className="block w-full px-3 py-2 mt-1 border rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary"
+                  min="1"
+                  max="20"
+                />
+                {errors.numQuestions && (
+                  <motion.p 
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    className="mt-2 text-sm text-red-600"
                   >
-                    <label htmlFor="contractType" className="block text-sm font-medium text-gray-700">
-                      Contract Type
-                    </label>
-                    <select
-                      id="contractType"
-                      {...register("contractType", { required: "Contract type is required" })}
-                      className="block w-full px-3 py-2 mt-1 border rounded-lg shadow-sm focus:ring-2 focus:ring-primary focus:border-primary"
-                    >
-                      <option value="">Select Contract Type</option>
-                      <option value="NDA">Non-Disclosure Agreement (NDA)</option>
-                      <option value="Employment">Employment Contract</option>
-                      <option value="Sales">Sales Contract</option>
-                      <option value="Lease">Lease Agreement</option>
-                      <option value="Service">Service Agreement</option>
-                      <option value="Partnership">Partnership Agreement</option>
-                      <option value="Purchase">Purchase Agreement</option>
-                    </select>
-                  </motion.div>
+                    {errors.numQuestions.message}
+                  </motion.p>
                 )}
-              </AnimatePresence>
+              </motion.div>
 
               <motion.button
                 whileHover={{ scale: 1.02 }}
@@ -296,7 +344,7 @@ const LegalDocumentGenerator: React.FC = () => {
                 ) : (
                   <FileText className="w-5 h-5 mr-2" />
                 )}
-                {loading ? 'Generating...' : 'Generate Document'}
+                {loading ? 'Generating...' : 'Generate Questions'}
               </motion.button>
             </motion.form>
 
@@ -327,7 +375,7 @@ const LegalDocumentGenerator: React.FC = () => {
             )}
 
             <AnimatePresence>
-              {!loading && code && (
+              {!loading && questions && (
                 <motion.div
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -336,7 +384,7 @@ const LegalDocumentGenerator: React.FC = () => {
                 >
                   <div
                     id="pdf-content"
-                    dangerouslySetInnerHTML={{ __html: converter.makeHtml(code) }}
+                    dangerouslySetInnerHTML={{ __html: converter.makeHtml(questions) }}
                     className="p-6 bg-white border-2 border-gray-200 rounded-lg shadow-lg"
                   />
 
@@ -371,7 +419,7 @@ const LegalDocumentGenerator: React.FC = () => {
                         className="flex items-center justify-center mt-4 space-x-2 text-green-600"
                       >
                         <CheckCircle className="w-5 h-5" />
-                        <span>Document generated successfully!</span>
+                        <span>Questions generated successfully!</span>
                       </motion.div>
                     )}
                   </AnimatePresence>
