@@ -39,8 +39,8 @@ const App: React.FC = () => {
             <Route path="/login" element={<AuthPage />} />
             <Route path="/signup" element={<AuthPage />} />
             <Route path="/forbidden" element={<ForbiddenPage />} />
-            <Route path="/JudgeDashboard" element={<JudgeDashboard />} />
-            <Route path="/UserDashboard" element={<UserDashboard />} />
+            <Route path="/judge" element={<JudgeDashboard />} />
+            <Route path="/user" element={<UserDashboard />} />
 
             {/* <Route
               path="/UserDashboard"
