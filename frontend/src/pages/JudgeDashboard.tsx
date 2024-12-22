@@ -208,6 +208,7 @@ const JudgeDashboard: React.FC = () => {
           ].map((tab) => (
             <button
               key={tab.id}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               onClick={() => setActiveTab(tab.id as any)}
               className={`
                 flex-1 flex items-center justify-center p-3 rounded-full transition-all

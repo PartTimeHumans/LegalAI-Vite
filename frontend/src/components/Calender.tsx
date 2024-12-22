@@ -6,7 +6,7 @@ interface Event {
   date: string;
   title: string;
   time?: string;
-  type?: 'hearing' | 'meeting' | 'deadline' | 'appointment';
+  type?: 'hearing' | 'meeting' | 'deadline' | 'appointment' | 'reminder';
 }
 
 interface CalendarProps {
@@ -18,7 +18,6 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
   const [currentDate, setCurrentDate] = useState(new Date());
   const [events, setEvents] = useState<Event[]>([]);
 
-  // Dynamic event generation based on route
   useEffect(() => {
     let routeEvents: Event[] = [];
 
@@ -96,11 +95,9 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
         routeEvents = customEvents || [];
     }
 
-    // Merge with any custom events passed as prop
     setEvents([...routeEvents, ...(customEvents || [])]);
   }, [location.pathname, customEvents]);
 
-  // Calculate days in month and first day of the month
   const getDaysInMonth = (date: Date) => {
     return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
   };
@@ -112,7 +109,6 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
   const daysInMonth = getDaysInMonth(currentDate);
   const firstDayOfMonth = getFirstDayOfMonth(currentDate);
 
-  // Navigation handlers
   const handlePrevMonth = () => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() - 1, 1));
   };
@@ -121,26 +117,21 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
     setCurrentDate(new Date(currentDate.getFullYear(), currentDate.getMonth() + 1, 1));
   };
 
-  // Event filtering for specific date
   const getEventsForDate = (day: number) => {
     const dateString = new Date(currentDate.getFullYear(), currentDate.getMonth(), day).toDateString();
     return events.filter(event => new Date(event.date).toDateString() === dateString);
   };
 
-  // Render day cells
   const renderDays = () => {
     const days = [];
     
-    // Empty cells for days before the first day of the month
     for (let i = 0; i < firstDayOfMonth; i++) {
       days.push(
-        <div key={`empty-${i}`} className="opacity-20 text-center p-2">
-          {/* Empty cell */}
+        <div key={`empty-${i}`} className="p-2 text-center opacity-20">
         </div>
       );
     }
 
-    // Days of the month
     for (let day = 1; day <= daysInMonth; day++) {
       const dateEvents = getEventsForDate(day);
       const isToday = day === new Date().getDate() && 
@@ -163,7 +154,7 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
             {day}
           </span>
           {dateEvents.length > 0 && (
-            <div className="absolute bottom-0 left-0 right-0 h-1 bg-primary rounded-b-lg"></div>
+            <div className="absolute bottom-0 left-0 right-0 h-1 rounded-b-lg bg-primary"></div>
           )}
         </div>
       );
@@ -172,7 +163,6 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
     return days;
   };
 
-  // Determine icon and title based on route
   const getRouteDetails = () => {
     switch (location.pathname) {
       case '/lawyer':
@@ -201,12 +191,11 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
   const { icon, title } = getRouteDetails();
 
   return (
-    <div className="bg-background shadow-lg rounded-2xl p-6 max-w-md mx-auto">
-      {/* Header with month navigation */}
-      <div className="flex justify-between items-center mb-6">
+    <div className="max-w-md p-6 mx-auto shadow-lg bg-background rounded-2xl">
+      <div className="flex items-center justify-between mb-6">
         <button 
           onClick={handlePrevMonth} 
-          className="p-2 hover:bg-secondary rounded-full transition-colors"
+          className="p-2 transition-colors rounded-full hover:bg-secondary"
         >
           <ChevronLeft className="text-primary-dark" />
         </button>
@@ -217,35 +206,31 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
         
         <button 
           onClick={handleNextMonth} 
-          className="p-2 hover:bg-secondary rounded-full transition-colors"
+          className="p-2 transition-colors rounded-full hover:bg-secondary"
         >
           <ChevronRight className="text-primary-dark" />
         </button>
       </div>
 
-      {/* Weekday headers */}
       <div className="grid grid-cols-7 gap-2 mb-4">
         {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map((day) => (
-          <div key={day} className="text-center font-medium text-sm text-primary-dark opacity-70">
+          <div key={day} className="text-sm font-medium text-center text-primary-dark opacity-70">
             {day}
           </div>
         ))}
       </div>
 
-      {/* Calendar Grid */}
       <div className="grid grid-cols-7 gap-2">
         {renderDays()}
       </div>
 
-      {/* Events Section */}
       {events.length > 0 && (
-        <div className="mt-6 border-t border-secondary pt-4">
-          <h3 className="text-lg font-semibold text-primary-dark mb-3 flex items-center">
+        <div className="pt-4 mt-6 border-t border-secondary">
+          <h3 className="flex items-center mb-3 text-lg font-semibold text-primary-dark">
             {icon}
             {title}
           </h3>
           {events.slice(0, 3).map((event, index) => {
-            // Select icon based on event type
             const EventIcon = event.type === 'hearing' ? Scale :
                               event.type === 'meeting' ? Briefcase :
                               event.type === 'deadline' ? Clock :
@@ -273,7 +258,7 @@ const Calendar: React.FC<CalendarProps> = ({ customEvents }) => {
                 <div>
                   <p className="font-medium text-primary-dark">{event.title}</p>
                   {event.time && (
-                    <div className="text-sm text-primary-dark/70 flex items-center">
+                    <div className="flex items-center text-sm text-primary-dark/70">
                       <Clock className="w-4 h-4 mr-1" />
                       {event.time}
                     </div>
