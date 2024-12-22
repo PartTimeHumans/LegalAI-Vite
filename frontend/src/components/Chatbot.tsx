@@ -44,9 +44,7 @@ const Button: React.FC<ButtonProps> = ({
   );
 };
 
-interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {}
-
-const Input: React.FC<InputProps> = ({ className = '', ...props }) => {
+const Input: React.FC<React.InputHTMLAttributes<HTMLInputElement>> = ({ className = '', ...props }) => {
   return (
     <input
       className={`flex h-10 sm:h-12 w-full rounded-full border border-primary bg-white px-3 sm:px-4 py-2 text-sm placeholder:text-gray-400 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${className}`}

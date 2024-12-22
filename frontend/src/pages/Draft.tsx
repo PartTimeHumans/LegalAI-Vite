@@ -4,7 +4,7 @@ import axios from 'axios';
 import { Document, Packer, Paragraph, TextRun } from 'docx';
 import { saveAs } from 'file-saver';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FileText, Download, File, Loader, AlertCircle, CheckCircle, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
+import { FileText,File, Loader, AlertCircle, CheckCircle, Maximize2, Minimize2, RotateCcw } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
 
 type DocumentType = 'Rent Agreement' | 'Employment Contract' | 'Non-Disclosure Agreement' | 'Will' | 'Other';
